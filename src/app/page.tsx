@@ -18,6 +18,6 @@ export default function Home() {
         <button onClick={onClick}>Ping</button>
         <div>{message}</div>
       </div>
-    </  main>
+    </main>
     );
 }
