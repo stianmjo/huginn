@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { toBackendUrl } from "@/lib/backend-url";
 
 export default function UploadForm() {
   const [file, setFile] = useState<File | null>(null);
@@ -13,13 +14,15 @@ export default function UploadForm() {
       r.onload = () => res(r.result as string);
       r.readAsDataURL(file);
     });
-    const resp = await fetch("/api/upload", {
+    const resp = await fetch(toBackendUrl("/api/upload"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ filename: file.name, data: dataUrl }),
     });
     const json = await resp.json();
-    setUrl(json.url);
+    if (json?.url) {
+      setUrl(toBackendUrl(json.url));
+    }
   }
 
   return (
